@@ -13,8 +13,12 @@ if(dir.exists(new_folder)){
   dir.create(new_folder)
 }
 for (i in 1:nrow(splits)){
-  comd = paste("ffmpeg -i", splits$file[i],  "-ss", splits$from[i], "-to", splits$to[i], 
-               "-acodec copy \ -vcodec copy ", paste(new_folder, splits$fname[i], sep = "/"))
+  comd = paste("ffmpeg -ss", splits$from[i], "-i", splits$file[i],  
+               "-to", splits$to[i], 
+               "-vcodec copy -acodec copy -avoid_negative_ts make_zero ", 
+               paste(new_folder, splits$fname[i], sep = "/"))
+  #for some reason ffmpeg parameter order makes a difference as per
+  #https://video.stackexchange.com/questions/18284/cutting-with-ffmpeg-results-in-few-seconds-of-black-screen-how-do-i-fix-this
   print(comd)
   system(comd)
 }
