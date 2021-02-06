@@ -14,8 +14,8 @@ num_enter_frames = 10
 df = data.frame(x =c(0.57), y = c(0.48))
 num_frames = 40
 final_bernie = 1.2*screen_size
-first_bernie = 0.3
-penultimate_bernie = 0.3*final_bernie
+first_bernie = final_bernie/8
+penultimate_bernie = final_bernie/5
 
 #calculate parameters
 scales = 1:num_frames
