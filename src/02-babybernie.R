@@ -10,11 +10,11 @@ fs::dir_create(output_image_folder)
 
 #Parameters
 screen_size = 2
-num_enter_frames = 6
+num_enter_frames = 10
 df = data.frame(x =c(0.57), y = c(0.48))
-num_frames = 25
-final_bernie = 1.2*screen_size#0.8*log(screen_size) + 1 #2/3 for screen size 1
-penultimate_bernie = 0.25*final_bernie
+num_frames = 40
+final_bernie = 1.2*screen_size
+penultimate_bernie = 0.2*final_bernie
 #calculate parameters
 scales = 1:num_frames
 hjusts = seq(0,0.2, length.out = length(scales ))
@@ -24,7 +24,7 @@ sizes[length(sizes)] = final_bernie
 scales = c(rep(1, num_enter_frames), scales, rep(tail(scales ,1), num_enter_frames))
 hjusts = c(rep(0, num_enter_frames), hjusts)
 sizes = c(rep(0, num_enter_frames), sizes)
-for(i in 1:num_enter_frames){
+for(i in 1:(2*num_enter_frames)){
   hjusts = c( hjusts, tail(hjusts,1))
   sizes = c(sizes, tail(sizes,1))
 }
@@ -59,6 +59,10 @@ for (i in scales){
 imgs <- gtools::mixedsort(list.files(output_image_folder, full.names = TRUE))
 img_list <- lapply(imgs, image_read)
 
+#annotated
+img_list = lapply(img_list, image_annotate, text = "Zoom In",  size = 50, 
+                  gravity = "north", color = "grey")
+
 ## join the images together
 img_joined <- image_join(img_list)
 
@@ -74,3 +78,8 @@ try(fs::dir_delete(output_gif_folder))
 fs::dir_create(output_gif_folder)
 image_write(image = img_animated,
             path = paste0(output_gif_folder, "ultra.gif"))
+
+
+
+system('ffmpeg -i ./data/gif/ultra.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ./data/gif/ultra.mp4')
+
