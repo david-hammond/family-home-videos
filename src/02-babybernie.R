@@ -9,12 +9,12 @@ try(fs::dir_delete(output_image_folder))
 fs::dir_create(output_image_folder)
 
 #Parameters
-screen_size = 0.5
-num_enter_frames = 2
+screen_size = 1
+num_enter_frames = 5
 df = data.frame(x =c(0.57), y = c(0.48))
 num_frames = 25
-final_bernie = 0.8*screen_size#0.8*log(screen_size) + 1 #2/3 for screen size 1
-penultimate_bernie = 0.8*final_bernie
+final_bernie = 0.9*screen_size#0.8*log(screen_size) + 1 #2/3 for screen size 1
+penultimate_bernie = 0.7*final_bernie
 #calculate parameters
 scales = 1:num_frames
 hjusts = seq(0,0.2, length.out = length(scales ))
