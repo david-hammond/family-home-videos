@@ -7,17 +7,21 @@ library(fs)
 output_image_folder = "./data/images/"
 try(fs::dir_delete(output_image_folder))
 fs::dir_create(output_image_folder)
-df = data.frame(x =c(0.57), y = c(0.48))
-num_frames = 10
-multipliers = 1:num_frames
-hjusts = seq(0,0.2, length.out = length(multipliers))
-sizes = seq(0.05,0.7, length.out = length(multipliers))
-sizes = sizes^3
-sizes[length(sizes)] = 25*sizes[length(sizes)] 
 
-num_enter_frames = 2
-scales = c(rep(1, num_enter_frames), multipliers, rep(tail(multipliers,1), num_enter_frames))
-multipliers = c(rep(0, num_enter_frames), multipliers, rep(tail(multipliers,1), num_enter_frames))
+#Parameters
+screen_size = 1
+num_enter_frames = 3
+df = data.frame(x =c(0.57), y = c(0.48))
+num_frames = 20
+final_bernie = 25.5/3
+
+#calculate parameters
+scales = 1:num_frames
+hjusts = seq(0,0.2, length.out = length(scales ))
+sizes = seq(0.05,0.5, length.out = length(scales ))
+sizes = sizes^3
+sizes[length(sizes)] = screen_size * final_bernie * sizes[length(sizes)] 
+scales = c(rep(1, num_enter_frames), scales, rep(tail(scales ,1), num_enter_frames))
 hjusts = c(rep(0, num_enter_frames), hjusts)
 sizes = c(rep(0, num_enter_frames), sizes)
 for(i in 1:num_enter_frames){
@@ -25,7 +29,7 @@ for(i in 1:num_enter_frames){
   sizes = c(sizes, tail(sizes,1))
 }
 count = 0
-for (multiplier in multipliers){
+for (i in scales){
   count = count + 1
   my_plot <- 
     ggplot(df, aes (x, y))+ geom_bernie(bernie = "sitting", size = sizes[count]) +
@@ -47,7 +51,7 @@ for (multiplier in multipliers){
     draw_plot(my_plot) 
 
   fname = paste0(output_image_folder, count,  "ultra.png")
-  ggsave(p, filename = fname)
+  ggsave(p, filename = fname, width = screen_size, height = screen_size)
 }
 
 
@@ -59,7 +63,7 @@ img_list <- lapply(imgs, image_read)
 img_joined <- image_join(img_list)
 
 ## animate at 2 frames per second
-img_animated <- image_animate(img_joined, fps = 2, optimize = T)
+img_animated <- image_animate(img_joined, fps = 5, optimize = T)
 
 ## view animated image
 #img_animated
