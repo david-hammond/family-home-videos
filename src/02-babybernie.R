@@ -9,7 +9,7 @@ try(fs::dir_delete(output_image_folder))
 fs::dir_create(output_image_folder)
 
 #Parameters
-screen_size = 1
+screen_size = 0.5
 num_enter_frames = 3
 df = data.frame(x =c(0.57), y = c(0.48))
 num_frames = 20
