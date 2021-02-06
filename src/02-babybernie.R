@@ -9,18 +9,18 @@ try(fs::dir_delete(output_image_folder))
 fs::dir_create(output_image_folder)
 
 #Parameters
-screen_size = 0.5
+screen_size = 1
 num_enter_frames = 3
 df = data.frame(x =c(0.57), y = c(0.48))
-num_frames = 20
-final_bernie = 25.5/3
-
+num_frames = 30
+final_bernie = (2/3)*log(screen_size) + 1
+penultimate_bernie = 0.5*final_bernie
 #calculate parameters
 scales = 1:num_frames
 hjusts = seq(0,0.2, length.out = length(scales ))
-sizes = seq(0.05,0.5, length.out = length(scales ))
+sizes = seq(0.05,penultimate_bernie, length.out = length(scales ))
 sizes = sizes^3
-sizes[length(sizes)] = screen_size * final_bernie * sizes[length(sizes)] 
+sizes[length(sizes)] = final_bernie
 scales = c(rep(1, num_enter_frames), scales, rep(tail(scales ,1), num_enter_frames))
 hjusts = c(rep(0, num_enter_frames), hjusts)
 sizes = c(rep(0, num_enter_frames), sizes)
@@ -63,7 +63,7 @@ img_list <- lapply(imgs, image_read)
 img_joined <- image_join(img_list)
 
 ## animate at 2 frames per second
-img_animated <- image_animate(img_joined, fps = 5, optimize = T)
+img_animated <- image_animate(img_joined, fps = 10, optimize = T)
 
 ## view animated image
 #img_animated
