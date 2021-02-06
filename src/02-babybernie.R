@@ -14,11 +14,13 @@ num_enter_frames = 10
 df = data.frame(x =c(0.57), y = c(0.48))
 num_frames = 40
 final_bernie = 1.2*screen_size
-penultimate_bernie = 0.2*final_bernie
+first_bernie = 0.3
+penultimate_bernie = 0.3*final_bernie
+
 #calculate parameters
 scales = 1:num_frames
 hjusts = seq(0,0.2, length.out = length(scales ))
-sizes = seq(0.2,penultimate_bernie, length.out = length(scales ))
+sizes = seq(first_bernie ,penultimate_bernie, length.out = length(scales ))
 sizes = sizes^3
 sizes[length(sizes)] = final_bernie
 scales = c(rep(1, num_enter_frames), scales, rep(tail(scales ,1), num_enter_frames))
